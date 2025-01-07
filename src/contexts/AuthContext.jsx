@@ -253,3 +253,63 @@ export const AuthProvider = ({ children }) => {
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 };
+
+// // src/contexts/AuthContext.jsx
+// import { createContext, useContext, useState, useEffect } from "react";
+// import { onAuthStateChanged, signOut } from "firebase/auth";
+// import { auth } from "../firebaseConfig";
+
+// const AuthContext = createContext();
+
+// export const useAuth = () => useContext(AuthContext);
+
+// export const AuthProvider = ({ children }) => {
+//   const [currentUser, setCurrentUser] = useState(null);
+//   const [loading, setLoading] = useState(true);
+
+//   const logout = async () => {
+//     try {
+//       clearInactivityTimer();
+//       await signOut(auth);
+//     } catch (error) {
+//       console.error("Logout failed:", error);
+//     }
+//   };
+
+//   const clearInactivityTimer = () => {
+//     if (window.inactivityTimer) {
+//       clearTimeout(window.inactivityTimer);
+//       window.inactivityTimer = null;
+//     }
+//   };
+
+//   useEffect(() => {
+//     const unsubscribe = onAuthStateChanged(auth, (user) => {
+//       setCurrentUser(user);
+//       setLoading(false);
+//     });
+
+//     const resetTimer = () => {
+//       clearInactivityTimer();
+//       window.inactivityTimer = setTimeout(() => {
+//         logout();
+//       }, 120000); // 2 minutes
+//     };
+
+//     window.addEventListener("mousemove", resetTimer);
+//     window.addEventListener("keypress", resetTimer);
+
+//     return () => {
+//       unsubscribe();
+//       clearInactivityTimer();
+//       window.removeEventListener("mousemove", resetTimer);
+//       window.removeEventListener("keypress", resetTimer);
+//     };
+//   }, []);
+
+//   return (
+//     <AuthContext.Provider value={{ currentUser, logout }}>
+//       {!loading && children}
+//     </AuthContext.Provider>
+//   );
+// };

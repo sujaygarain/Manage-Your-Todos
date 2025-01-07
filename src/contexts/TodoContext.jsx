@@ -130,6 +130,8 @@
 //   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;
 // };
 
+
+// //////
 // src/contexts/TodoContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, where } from "firebase/firestore";
@@ -205,3 +207,55 @@ export const TodoProvider = ({ children }) => {
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;
 };
+
+
+// // src/contexts/TodoContext.jsx
+// import { createContext, useContext, useState, useEffect } from "react";
+// import { db } from "../firebaseConfig";
+// import {
+//   collection,
+//   query,
+//   onSnapshot,
+//   doc,
+//   updateDoc,
+// } from "firebase/firestore";
+// import { useAuth } from "./AuthContext";
+
+// const TodoContext = createContext();
+
+// export const useTodos = () => useContext(TodoContext);
+
+// export const TodoProvider = ({ children }) => {
+//   const { currentUser } = useAuth();
+//   const [todos, setTodos] = useState([]);
+
+//   useEffect(() => {
+//     if (!currentUser) return;
+
+//     const todosRef = collection(db, "users", currentUser.uid, "todos");
+//     const q = query(todosRef);
+
+//     const unsubscribe = onSnapshot(q, (snapshot) => {
+//       const todosData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+//       setTodos(todosData);
+//     });
+
+//     return () => unsubscribe();
+//   }, [currentUser]);
+
+//   const toggleComplete = async (id) => {
+//     const todo = todos.find((todo) => todo.id === id);
+//     if (!todo) return;
+
+//     const updatedTodo = { completed: !todo.completed };
+//     const todoRef = doc(db, "users", currentUser.uid, "todos", id);
+//     await updateDoc(todoRef, updatedTodo);
+//   };
+
+//   return (
+//     <TodoContext.Provider value={{ todos, toggleComplete }}>
+//       {children}
+//     </TodoContext.Provider>
+//   );
+// };
+
